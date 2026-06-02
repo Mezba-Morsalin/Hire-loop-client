@@ -6,7 +6,7 @@ import navImg from "../../public/images/navbar.png";
 import Image from "next/image";
 import { Button } from "@heroui/react";
 import NavLink from "./shared/NavLink";
-import { Menu, X } from "lucide-react";
+import { FaBars, FaTimes } from "react-icons/fa";
 
 const Navbar = () => {
   const [open, setOpen] = useState(false);
@@ -26,22 +26,16 @@ const Navbar = () => {
   );
 
   return (
-    <header className="sticky top-0 z-50 ">
-      <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 bg-[#222222] mt-5">
+    <header className="sticky top-0 z-50">
+      <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 bg-[#222222] md:mt-5">
         <div className="flex items-center justify-between">
-          
+
           {/* Logo */}
           <Link href={"/"}>
-            <Image
-              src={navImg}
-              alt="navbar-image"
-              width={150}
-              height={150}
-              className=""
-            />
+            <Image src={navImg} alt="navbar-image" width={150} height={150} />
           </Link>
 
-          {/* Desktop + Tablet Menu */}
+          {/* Desktop Menu */}
           <div className="hidden md:flex items-center gap-6">
             <ul className="flex gap-5 text-sm lg:text-base">
               {MainLinks}
@@ -66,17 +60,16 @@ const Navbar = () => {
 
           {/* Mobile Button */}
           <button
-            className="md:hidden p-2"
+            className="md:hidden p-2 text-white"
             onClick={() => setOpen(!open)}
           >
-            {open ? <X size={22} /> : <Menu size={22} />}
+            {open ? <FaTimes size={22} /> : <FaBars size={22} />}
           </button>
         </div>
 
-        {/* Mobile + Tablet Dropdown */}
+        {/* Mobile Menu */}
         {open && (
-          <div className="md:hidden mt-4 flex flex-col gap-4 bg-white rounded-xl shadow-lg p-4 border border-gray-100">
-            
+          <div className="md:hidden mt-4 flex flex-col gap-4 bg-[#222222] rounded-xl p-4">
             <ul className="flex flex-col gap-3 text-sm">
               {MainLinks}
             </ul>
