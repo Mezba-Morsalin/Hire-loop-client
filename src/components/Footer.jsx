@@ -25,31 +25,31 @@ export default function Footer() {
 
           {/* Product */}
           <div className="lg:col-span-2">
-            <h3 className="text-white font-semibold mb-4">Product</h3>
+            <h3 className="bg-linear-to-r from-indigo-500 to-indigo-600 bg-clip-text text-transparent font-semibold mb-4">Product</h3>
             <ul className="space-y-3">
-              <li><Link href="/jobs" className="hover:text-white transition">Job discovery</Link></li>
-              <li><Link href="#" className="hover:text-white transition">Worker AI</Link></li>
-              <li><Link href="/companies" className="hover:text-white transition">Companies</Link></li>
-              <li><Link href="#" className="hover:text-white transition">Salary data</Link></li>
+              <li><Link href="/jobs" className=" hover:bg-linear-to-r from-indigo-500 to-indigo-600 bg-clip-text hover:text-transparent transition">Job discovery</Link></li>
+              <li><Link href="#" className=" hover:bg-linear-to-r from-indigo-500 to-indigo-600 bg-clip-text hover:text-transparent transition">Worker AI</Link></li>
+              <li><Link href="/companies" className=" hover:bg-linear-to-r from-indigo-500 to-indigo-600 bg-clip-text hover:text-transparent transition">Companies</Link></li>
+              <li><Link href="#" className=" hover:bg-linear-to-r from-indigo-500 to-indigo-600 bg-clip-text hover:text-transparent transition">Salary data</Link></li>
             </ul>
           </div>
 
           {/* Navigations */}
           <div className="lg:col-span-2">
-            <h3 className="text-white font-semibold mb-4">Navigations</h3>
+            <h3 className="bg-linear-to-r from-indigo-500 to-indigo-600 bg-clip-text text-transparent font-semibold mb-4">Navigations</h3>
             <ul className="space-y-3">
-              <li><Link href="#" className="hover:text-white transition">Help center</Link></li>
-              <li><Link href="#" className="hover:text-white transition">Career library</Link></li>
-              <li><Link href="/contact" className="hover:text-white transition">Contact</Link></li>
+              <li><Link href="#" className=" hover:bg-linear-to-r from-indigo-500 to-indigo-600 bg-clip-text hover:text-transparent transition">Help center</Link></li>
+              <li><Link href="#" className=" hover:bg-linear-to-r from-indigo-500 to-indigo-600 bg-clip-text hover:text-transparent transition">Career library</Link></li>
+              <li><Link href="/contact" className=" hover:bg-linear-to-r from-indigo-500 to-indigo-600 bg-clip-text hover:text-transparent transition">Contact</Link></li>
             </ul>
           </div>
 
           {/* Resources */}
           <div className="lg:col-span-3">
-            <h3 className="text-white font-semibold mb-4">Resources</h3>
+            <h3 className="bg-linear-to-r from-indigo-500 to-indigo-600 bg-clip-text text-transparent font-semibold mb-4">Resources</h3>
             <ul className="space-y-3">
-              <li><Link href="#" className="hover:text-white transition">Brand Guideline</Link></li>
-              <li><Link href="#" className="hover:text-white transition">Newsroom</Link></li>
+              <li><Link href="#" className=" hover:bg-linear-to-r from-indigo-500 to-indigo-600 bg-clip-text hover:text-transparent transition">Brand Guideline</Link></li>
+              <li><Link href="#" className=" hover:bg-linear-to-r from-indigo-500 to-indigo-600 bg-clip-text hover:text-transparent transition">Newsroom</Link></li>
             </ul>
           </div>
         </div>
@@ -71,8 +71,8 @@ export default function Footer() {
         <div className="border-t border-gray-800 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-sm">
           <p>Copyright © 2026 — Hireloop. All rights reserved.</p>
           <div className="flex gap-6">
-            <Link href="/terms" className="hover:text-white transition">Terms &amp; Policy</Link>
-            <Link href="/privacy" className="hover:text-white transition">Privacy Guideline</Link>
+            <Link href="/terms" className=" hover:bg-linear-to-r from-indigo-500 to-indigo-600 bg-clip-text hover:text-transparent transition">Terms &amp; Policy</Link>
+            <Link href="/privacy" className=" hover:bg-linear-to-r from-indigo-500 to-indigo-600 bg-clip-text hover:text-transparent transition">Privacy Guideline</Link>
           </div>
         </div>
       </div>
