@@ -106,7 +106,7 @@ const Navbar = () => {
 
                       <Button
                         onClick={handleSignOut}
-                        className="mt-4 w-full bg-red-500 hover:bg-red-600 text-white"
+                        className="mt-4 rounded-xl w-full border transition-transform duration-200 hover:scale-105 border-indigo-500 bg-transparent text-white"
                       >
                         Sign Out
                       </Button>
@@ -115,7 +115,7 @@ const Navbar = () => {
                 </div>
               ) : (
                 <Link href="/signin">
-                  <Button className="bg-linear-to-r from-indigo-500 to-indigo-600 bg-clip-text text-transparent font-bold transition-transform duration-200 hover:scale-105">
+                  <Button className="rounded-xl border transition-transform duration-200 hover:scale-105 border-indigo-500 bg-transparent text-white">
                     Sign In
                   </Button>
                 </Link>
@@ -184,14 +184,14 @@ const Navbar = () => {
               </div>
             ) : (
               <Link href="/signin" onClick={() => setOpen(false)}>
-                <Button className="w-full border border-indigo-500 bg-transparent text-white">
+                <Button className="w-full border transition-transform duration-200 hover:scale-105 border-indigo-500 bg-transparent text-white">
                   Sign In
                 </Button>
               </Link>
             )}
 
             <Link href="/" onClick={() => setOpen(false)}>
-              <Button className="w-full bg-linear-to-r from-indigo-500 to-indigo-600 text-white">
+              <Button className="w-full transition-transform duration-200 hover:scale-105 bg-linear-to-r from-indigo-500 to-indigo-600 text-white mt-5">
                 Get Started
               </Button>
             </Link>
