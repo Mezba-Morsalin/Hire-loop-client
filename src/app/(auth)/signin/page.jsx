@@ -19,11 +19,13 @@ import { FcGoogle } from "react-icons/fc";
 const Page = () => {
   const [message, setMessage] = useState("");
   const [isSuccess, setIsSuccess] = useState(false);
+    const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false)
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    setLoading(true);
     setMessage("");
 
     const formData = new FormData(e.currentTarget);
@@ -52,6 +54,9 @@ const Page = () => {
     } catch (err) {
       setIsSuccess(false);
       setMessage("Something went wrong. Please try again.");
+    }
+    finally {
+      setLoading(false);
     }
   };
 
@@ -143,12 +148,22 @@ const Page = () => {
 
         <div className="flex justify-center flex-col sm:flex-row gap-2 w-full">
           <Button
+          isDisabled={loading}
             type="submit"
             fullWidth
             className="bg-linear-to-r from-indigo-500 to-indigo-600 rounded-xl text-white"
           >
-            <BiCheck className="text-lg" />
-            Sign In
+            {loading ? (
+            <span className="flex items-center gap-2">
+              <span className="h-4 w-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
+              Signing In...
+            </span>
+          ) : (
+            <>
+              <BiCheck className="text-lg" />
+              Sign In
+            </>
+          )}
           </Button>
         </div>
       </Form>

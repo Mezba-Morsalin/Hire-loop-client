@@ -20,17 +20,19 @@ const Page = () => {
   const [message, setMessage] = useState("");
   const [isSuccess, setIsSuccess] = useState(false);
   const [showPassword, setShowPassword] = useState(false)
+  const [loading, setLoading] = useState(false)
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    setLoading(true);
     setMessage("");
 
     const formData = new FormData(e.currentTarget);
     const user = Object.fromEntries(formData.entries());
 
     try {
-      const { error } = await authClient.signIn.email({
+      const { error } = await authClient.signUp.email({
         name: user.name,
         image: user.image,
         email: user.email,
@@ -46,7 +48,7 @@ const Page = () => {
 
       setIsSuccess(true);
       setMessage(
-        "Congratulations! Your account has been created successfully."
+        "Your account has been created successfully."
       );
 
       e.target.reset();
@@ -54,6 +56,9 @@ const Page = () => {
       setIsSuccess(false);
       setMessage("Something went wrong. Please try again.");
     }
+    finally {
+    setLoading(false);
+  }
   };
 
   return (
@@ -83,16 +88,8 @@ const Page = () => {
           <FieldError />
         </TextField>
 
-        <TextField name="image" type="url">
-          <Label className="text-white/90">Image Link</Label>
-
-          <Input
-            placeholder="Image URL"
-            className="border-none shadow-none focus:shadow-[0_0_20px_rgba(99,102,241,0.5)] focus:outline-none transition-all duration-300"
-          />
-        </TextField>
-
-        <TextField
+        <div className="flex flex-col md:flex-row gap-5">
+          <TextField
           className="w-full"
           isRequired
           name="email"
@@ -148,6 +145,16 @@ const Page = () => {
           </Description>
           <FieldError />
         </TextField>
+        </div>
+
+        <TextField name="image" type="url">
+          <Label className="text-white/90">Image Link</Label>
+
+          <Input
+            placeholder="Image URL"
+            className="border-none shadow-none focus:shadow-[0_0_20px_rgba(99,102,241,0.5)] focus:outline-none transition-all duration-300"
+          />
+        </TextField>
 
         {/* Success / Error Message */}
         {message && (
@@ -162,14 +169,24 @@ const Page = () => {
           </div>
         )}
 
-        <div className="flex justify-center flex-col sm:flex-row gap-2 w-full">
+        <div className="flex justify-center flex-col sm:flex-row gap-2 w-full mt-5">
           <Button
+  isDisabled={loading}
   type="submit"
   fullWidth
   className="bg-linear-to-r from-indigo-500 to-indigo-600 rounded-xl text-white"
 >
-  <BiCheck className="text-lg" />
-  Sign Up
+  {loading ? (
+    <span className="flex items-center gap-2">
+      <span className="h-4 w-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
+      Creating Account...
+    </span>
+  ) : (
+    <>
+      <BiCheck className="text-lg" />
+      Sign Up
+    </>
+  )}
 </Button>
         </div>
       </Form>
