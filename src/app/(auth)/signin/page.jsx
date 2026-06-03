@@ -92,7 +92,7 @@ const Page = () => {
         >
           <Label>Email</Label>
           <Input
-            className="border-none shadow-none focus:shadow-[0_0_20px_rgba(99,102,241,0.5)] focus:outline-none transition-all duration-300"
+            className="border-none shadow-none py-4 focus:shadow-[0_0_20px_rgba(99,102,241,0.5)] focus:outline-none transition-all duration-300"
             placeholder="john@example.com"
           />
           <FieldError />
@@ -119,10 +119,10 @@ const Page = () => {
         >
           <Label>Password</Label>
           <Input
-            className=" border-none shadow-none focus:shadow-[0_0_20px_rgba(99,102,241,0.5)] focus:outline-none transition-all duration-300"
+            className="py-4 border-none shadow-none focus:shadow-[0_0_20px_rgba(99,102,241,0.5)] focus:outline-none transition-all duration-300"
             placeholder="Enter your password"
           />
-          <span onClick={()=> setShowPassword(!showPassword)} className="absolute top-8.5 cursor-pointer right-3">
+          <span onClick={()=> setShowPassword(!showPassword)} className="absolute top-11 cursor-pointer right-4">
             {
                 showPassword ? <FaEye/> : <FaEyeSlash/>
             }
@@ -151,7 +151,7 @@ const Page = () => {
           isDisabled={loading}
             type="submit"
             fullWidth
-            className="bg-linear-to-r from-indigo-500 to-indigo-600 rounded-xl text-white"
+            className="py-6 transition-transform duration-200 hover:scale-105 bg-linear-to-r from-indigo-500 to-indigo-600 rounded-xl text-white"
           >
             {loading ? (
             <span className="flex items-center gap-2">
@@ -175,7 +175,7 @@ const Page = () => {
       </div>
 
       <div className="flex justify-center items-center">
-        <Button className="inline-flex gap-3 bg-transparent border border-indigo-500 text-white rounded-xl">
+        <Button className="py-6 transition-transform duration-200 hover:scale-105 hover:bg-indigo-950 inline-flex gap-3 bg-transparent border border-indigo-500 text-white rounded-xl">
           <FcGoogle />
           Sign In with Google
         </Button>
