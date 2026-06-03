@@ -31,10 +31,9 @@ const Page = () => {
 
     try {
       const { error } = await authClient.signIn.email({
-        name: user.name,
-        image: user.image,
         email: user.email,
         password: user.password,
+        rememberMe : true,
         callbackURL: "/",
       });
 
@@ -46,7 +45,7 @@ const Page = () => {
 
       setIsSuccess(true);
       setMessage(
-        "Congratulations! Your account has been created successfully."
+        "Welcome back! You have signed in successfully."
       );
 
       e.target.reset();
@@ -60,11 +59,10 @@ const Page = () => {
     <div className="max-w-xl mx-4 sm:mx-6 md:mx-auto shadow-[0_0_30px_rgba(99,102,241,0.6)] my-8 md:my-16 p-5 sm:p-6 md:p-10 rounded-2xl border border-indigo-500/20">
       <div className="space-y-4 text-center">
         <h2 className="text-2xl md:text-4xl font-bold bg-linear-to-r from-indigo-500 to-indigo-600 bg-clip-text text-transparent">
-          Create Your HireLoop Account
+          Welcome Back
         </h2>
         <p className="text-gray-400 leading-7 text-sm sm:text-base">
-          Join HireLoop to discover opportunities, connect with top companies,
-          and take the next step in your career journey.
+          Sign in to your HireLoop account to manage applications, track opportunities, and stay connected with employers.
         </p>
       </div>
 
@@ -72,25 +70,6 @@ const Page = () => {
         onSubmit={handleSubmit}
         className="w-full flex flex-col gap-4 mt-8"
       >
-        <TextField isRequired name="name" type="text">
-          <Label className="text-white/90">Full Name</Label>
-
-          <Input
-            placeholder="Enter Your Username"
-            className="border-none shadow-none focus:shadow-[0_0_20px_rgba(99,102,241,0.5)] focus:outline-none transition-all duration-300"
-          />
-
-          <FieldError />
-        </TextField>
-
-        <TextField name="image" type="url">
-          <Label className="text-white/90">Image Link</Label>
-
-          <Input
-            placeholder="Image URL"
-            className="border-none shadow-none focus:shadow-[0_0_20px_rgba(99,102,241,0.5)] focus:outline-none transition-all duration-300"
-          />
-        </TextField>
 
         <TextField
           className="w-full"
@@ -135,14 +114,14 @@ const Page = () => {
         >
           <Label>Password</Label>
           <Input
-            className="border-none shadow-none focus:shadow-[0_0_20px_rgba(99,102,241,0.5)] focus:outline-none transition-all duration-300"
+            className=" border-none shadow-none focus:shadow-[0_0_20px_rgba(99,102,241,0.5)] focus:outline-none transition-all duration-300"
             placeholder="Enter your password"
           />
           <span onClick={()=> setShowPassword(!showPassword)} className="absolute top-8.5 cursor-pointer right-3">
-                      {
-                          showPassword ? <FaEye/> : <FaEyeSlash/>
-                      }
-                    </span>
+            {
+                showPassword ? <FaEye/> : <FaEyeSlash/>
+            }
+          </span>
           <Description>
             Must be at least 8 characters with 1 uppercase and 1 number
           </Description>
@@ -164,13 +143,13 @@ const Page = () => {
 
         <div className="flex justify-center flex-col sm:flex-row gap-2 w-full">
           <Button
-  type="submit"
-  fullWidth
-  className="bg-linear-to-r from-indigo-500 to-indigo-600 rounded-xl text-white"
->
-  <BiCheck className="text-lg" />
-  Sign Up
-</Button>
+            type="submit"
+            fullWidth
+            className="bg-linear-to-r from-indigo-500 to-indigo-600 rounded-xl text-white"
+          >
+            <BiCheck className="text-lg" />
+            Sign In
+          </Button>
         </div>
       </Form>
 
@@ -183,12 +162,12 @@ const Page = () => {
       <div className="flex justify-center items-center">
         <Button className="inline-flex gap-3 bg-transparent border border-indigo-500 text-white rounded-xl">
           <FcGoogle />
-          Sign Up with Google
+          Sign In with Google
         </Button>
       </div>
       <div className="flex justify-center items-center gap-3 mt-4">
-        <p className="text-gray-400">Already Have an Account?</p>
-        <Link href={'/signin'} className="text-indigo-500">Sign In</Link>
+        <p className="text-gray-400">Don’t have an account?</p>
+        <Link href={'/signup'} className="text-indigo-500">Sign Up</Link>
       </div>
     </div>
   );
