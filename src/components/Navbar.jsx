@@ -48,8 +48,8 @@ const Navbar = () => {
   );
 
   return (
-    <header className="sticky top-0 z-50 backdrop-blur-md">
-      <nav className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 bg-[#222222]/95 border-b border-white/10 lg:border lg:rounded-2xl lg:mt-5">
+    <header className="sticky top-0 z-50 backdrop-blur-md bg-[#222222]/95 border-b border-white/10">
+      <nav className="relative max-w-7xl mx-auto px-4 sm:px-6">
 
         <div className="flex items-center justify-between">
 

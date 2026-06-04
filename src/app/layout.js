@@ -1,5 +1,7 @@
 import { Manrope} from "next/font/google";
 import "./globals.css";
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
 
 const manropeSans = Manrope({
   variable : "poppins",
@@ -18,7 +20,11 @@ export default function RootLayout({ children }) {
       lang="en" data-theme="dark"
       className={`${manropeSans.className} dark h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col">
+        <Navbar/>
+        {children}
+        <Footer/>
+        </body>
     </html>
   );
 }
