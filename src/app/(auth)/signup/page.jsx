@@ -8,6 +8,8 @@ import {
   Form,
   Input,
   Label,
+  Radio,
+  RadioGroup,
   TextField,
 } from "@heroui/react";
 import Link from "next/link";
@@ -30,6 +32,7 @@ const Page = () => {
 
     const formData = new FormData(e.currentTarget);
     const user = Object.fromEntries(formData.entries());
+    console.log(user)
 
     try {
       const { error } = await authClient.signUp.email({
@@ -37,6 +40,7 @@ const Page = () => {
         image: user.image,
         email: user.email,
         password: user.password,
+        role : user.role,
         callbackURL: "/",
       });
 
@@ -155,6 +159,28 @@ const Page = () => {
             className="py-4 border-none shadow-none focus:shadow-[0_0_20px_rgba(99,102,241,0.5)] focus:outline-none transition-all duration-300"
           />
         </TextField>
+
+        <div className="flex flex-col gap-4">
+      <Label>What do you want to do?</Label>
+      <RadioGroup defaultValue="seeker" name="role" orientation="horizontal">
+        <Radio value="seeker">
+          <Radio.Control>
+            <Radio.Indicator />
+          </Radio.Control>
+          <Radio.Content>
+            <Label>Seeker</Label>
+          </Radio.Content>
+        </Radio>
+        <Radio value="recruiter">
+          <Radio.Control>
+            <Radio.Indicator />
+          </Radio.Control>
+          <Radio.Content>
+            <Label>Recruiter</Label>
+          </Radio.Content>
+        </Radio>
+      </RadioGroup>
+    </div>
 
         {/* Success / Error Message */}
         {message && (
