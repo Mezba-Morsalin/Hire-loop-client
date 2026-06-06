@@ -121,9 +121,9 @@ const Navbar = () => {
                         transition={{ duration: 0.15 }}
                         className="absolute right-0 top-20 w-56 bg-[#1b1b1b] border border-white/10 rounded-2xl p-4 shadow-xl backdrop-blur-md"
                       >
-                        <Link href="/profile">
+                        <Link href="/dashboard/recruiter">
                           <Button className="bg-linear-to-r from-indigo-500 to-indigo-600 bg-clip-text text-transparent font-bold">
-                            Profile
+                            Dashboard
                           </Button>
                         </Link>
 
