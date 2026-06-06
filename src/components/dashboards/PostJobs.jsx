@@ -51,7 +51,7 @@ const PostJobs = () => {
       salary: formData.get("salary"),
       vacancies: formData.get("vacancies"),
       deadline,
-      status, // ✅ added status
+      status,
       skills: skillsRaw
         ? skillsRaw.split(",").map((skill) => skill.trim())
         : [],
@@ -73,7 +73,6 @@ const PostJobs = () => {
       );
 
       const jobs = await res.json();
-      console.log(jobs);
 
       if (jobs) {
         toast.success("Job Added Successfully");
@@ -90,7 +89,7 @@ const PostJobs = () => {
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-black">
+    <div className="flex justify-center items-center mt-6">
       <Modal>
         <Button className="border border-gray-500 rounded-xl" variant="ghost">
           Post a Job

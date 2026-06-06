@@ -9,7 +9,6 @@ import NavLink from "./shared/NavLink";
 import { FaBars, FaTimes, FaChevronDown } from "react-icons/fa";
 import { authClient } from "@/lib/auth-client";
 import { PuffLoader } from "react-spinners";
-
 import { motion, AnimatePresence } from "framer-motion";
 
 const Navbar = () => {
@@ -21,43 +20,67 @@ const Navbar = () => {
 
   const dropdownRef = useRef(null);
 
+  const avatarSrc =
+    user?.image?.trim() ? user.image : "/images/default-user.png";
+
   const handleSignOut = async () => {
     await authClient.signOut();
     setShowMenu(false);
     setOpen(false);
   };
 
-  // Close dropdown on outside click (IMPORTANT UX FIX)
+  // Close dropdown on outside click
   useEffect(() => {
     const handleClickOutside = (e) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
+      if (!dropdownRef.current?.contains(e.target)) {
         setShowMenu(false);
       }
     };
 
     document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
+    return () =>
+      document.removeEventListener("mousedown", handleClickOutside);
   }, []);
+
+  // Close dropdown on ESC
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === "Escape") setShowMenu(false);
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, []);
+
+  // Lock scroll when mobile menu open
+  useEffect(() => {
+    document.body.style.overflow = open ? "hidden" : "auto";
+  }, [open]);
 
   const MainLinks = (
     <>
-      <li><NavLink href="/browse-jobs">Browse Jobs</NavLink></li>
-      <li><NavLink href="/company">Company</NavLink></li>
-      <li><NavLink href="/pricing">Pricing</NavLink></li>
+      <li onClick={() => setOpen(false)}>
+        <NavLink href="/browse-jobs">Browse Jobs</NavLink>
+      </li>
+      <li onClick={() => setOpen(false)}>
+        <NavLink href="/company">Company</NavLink>
+      </li>
+      <li onClick={() => setOpen(false)}>
+        <NavLink href="/pricing">Pricing</NavLink>
+      </li>
     </>
   );
 
   return (
     <header className="sticky top-0 z-50 backdrop-blur-md bg-[#222222]/95 border-b border-white/10">
       <nav className="relative max-w-7xl mx-auto px-4 sm:px-6">
-
         <div className="flex items-center justify-between">
 
           {/* Logo */}
           <Link href="/">
             <Image
               src={navImg}
-              alt="HireLoop Logo"
+              alt="Logo"
               width={150}
               height={150}
               priority
@@ -87,8 +110,8 @@ const Navbar = () => {
                     className="flex items-center gap-3 border border-gray-600 hover:bg-black/20 p-3 rounded-full cursor-pointer"
                   >
                     <Image
-                      src={user.image || "/images/default-user.png"}
-                      alt={user.name || "User"}
+                      src={avatarSrc}
+                      alt="User"
                       width={42}
                       height={42}
                       className="rounded-full border border-indigo-500"
@@ -118,11 +141,11 @@ const Navbar = () => {
                         initial={{ opacity: 0, y: -10, scale: 0.95 }}
                         animate={{ opacity: 1, y: 0, scale: 1 }}
                         exit={{ opacity: 0, y: -10, scale: 0.95 }}
-                        transition={{ duration: 0.15 }}
+                        transition={{ duration: 0.2, ease: "easeOut" }}
                         className="absolute right-0 top-20 w-56 bg-[#1b1b1b] border border-white/10 rounded-2xl p-4 shadow-xl backdrop-blur-md"
                       >
                         <Link href="/dashboard/recruiter">
-                          <Button className="bg-linear-to-r from-indigo-500 to-indigo-600 bg-clip-text text-transparent font-bold">
+                          <Button className="bg-linear-to-r from-indigo-500 to-indigo-600 bg-clip-text text-transparent font-bold w-full">
                             Dashboard
                           </Button>
                         </Link>
@@ -136,7 +159,6 @@ const Navbar = () => {
                       </motion.div>
                     )}
                   </AnimatePresence>
-
                 </div>
               ) : (
                 <Link href="/signin">
@@ -161,7 +183,6 @@ const Navbar = () => {
           >
             {open ? <FaTimes size={22} /> : <FaBars size={22} />}
           </button>
-
         </div>
 
         {/* Mobile Menu */}
@@ -176,7 +197,9 @@ const Navbar = () => {
             >
               <div className="bg-[#1b1b1b] rounded-2xl border border-white/10 p-5 space-y-5">
 
-                <ul className="flex flex-col gap-4">{MainLinks}</ul>
+                <ul className="flex flex-col gap-4">
+                  {MainLinks}
+                </ul>
 
                 <div className="border-t border-white/10" />
 
@@ -189,8 +212,8 @@ const Navbar = () => {
 
                     <div className="flex items-center gap-3">
                       <Image
-                        src={user.image || "/images/default-user.png"}
-                        alt={user.name || "User"}
+                        src={avatarSrc}
+                        alt="User"
                         width={50}
                         height={50}
                         className="rounded-full border border-indigo-500"
@@ -212,7 +235,6 @@ const Navbar = () => {
                     >
                       Sign Out
                     </Button>
-
                   </div>
                 ) : (
                   <Link href="/signin" onClick={() => setOpen(false)}>
