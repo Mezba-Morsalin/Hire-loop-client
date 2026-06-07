@@ -136,7 +136,7 @@ const PostJobs = () => {
                     <Label>Location</Label>
                     <div className="relative">
                       <FaLocationDot className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-500" />
-                      <Input name="location" className="pl-10" />
+                      <Input name="location" className="pl-10 w-full" />
                     </div>
                   </TextField>
 

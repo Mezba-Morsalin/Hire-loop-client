@@ -13,7 +13,7 @@ import Link from "next/link";
 const navItems = [
   { icon: LuLayoutDashboard, href: "/dashboard/recruiter", label: "Dashboard" },
   { icon: MdOutlineViewCompactAlt, href: "/dashboard/recruiter/my-company", label: "My Company" },
-  { icon: PiSuitcaseFill, href: "/dashboard/recruiter/jobs/new", label: "Jobs" },
+  { icon: PiSuitcaseFill, href: "/dashboard/recruiter/jobs", label: "Jobs" },
   { icon: FaRegEnvelope, href: "#", label: "Messages" },
   { icon: IoPersonOutline, href: "#", label: "Profile" },
   { icon: GoGear, href: "#", label: "Settings" },
@@ -45,9 +45,9 @@ const DashboardSideBar = () => {
       </aside>
 
       {/* Mobile drawer */}
-      <div className="lg:hidden">
-        <Button variant="secondary" onPress={() => setOpen(true)}>
-          Menu
+      <div className="lg:hidden mt-5">
+        <Button className='border border-gray-400 rounded-xl' variant="ghost" onPress={() => setOpen(true)}>
+          See Dashboard
         </Button>
 
         <Drawer isOpen={open} onOpenChange={setOpen}>
