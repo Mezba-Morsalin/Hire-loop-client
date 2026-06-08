@@ -1,181 +1,326 @@
-import { Button, Input, Label, ListBox, Modal, Surface, TextField, Select, TextArea } from '@heroui/react';
-import React from 'react';
-import { FaLocationDot } from 'react-icons/fa6';
-import { FiUpload } from 'react-icons/fi';
+"use client";
+
+import React, { useEffect, useState } from "react";
+import {
+  Button,
+  Input,
+  Label,
+  ListBox,
+  Modal,
+  Surface,
+  TextField,
+  Select,
+  TextArea,
+} from "@heroui/react";
+
+import { FaLocationDot } from "react-icons/fa6";
+import { FiUpload } from "react-icons/fi";
+import { FaChevronDown } from "react-icons/fa";
+import toast, { Toaster } from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 const RegisterCompany = () => {
-    return (
-        <div>
-            <Modal>
-      <Button variant='ghost' className='px-5 py-2.5 rounded-lg bg-white text-black font-semibold hover:bg-zinc-200'>Register Your Company</Button>
-      <Modal.Backdrop variant="blur">
-        <Modal.Container placement="auto">
-          <Modal.Dialog className="sm:max-w-3xl">
-            <Modal.CloseTrigger />
-            <Modal.Header>
-            </Modal.Header>
-            <Modal.Body className="p-6">
-              <Surface variant="default">
-                <form className="grid grid-cols-1 md:grid-cols-2 gap-6 bg-[#121212] p-6 rounded-xl border border-zinc-800">
+  const router = useRouter()
+  const [industryOpen, setIndustryOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+  const [logo, setLogo] = useState(null);
+  const [logoPreview, setLogoPreview] = useState(null);
 
-      {/* HEADER */}
-      <div className="md:col-span-2 border-b border-zinc-800 pb-4">
-        <h2 className="text-xl font-semibold text-zinc-100">
-          Register Your Company to Start Hiring
-        </h2>
+  const [industry, setIndustry] = useState("");
+  const [employeeCount, setEmployeeCount] = useState("");
+  const [loading, setLoading] = useState(false);
 
-        <p className="text-sm text-zinc-400 mt-1">
-          As a recruiter, create your company profile to post jobs, manage applicants, and build your hiring pipeline on HireLoop.
-        </p>
-      </div>
+  useEffect(() => {
+    return () => {
+      if (logoPreview) URL.revokeObjectURL(logoPreview);
+    };
+  }, [logoPreview]);
 
-      {/* COMPANY NAME */}
-      <TextField>
-        <Label className="text-zinc-300">Company Name</Label>
-        <Input
-          name="companyName"
-          placeholder="Enter your company name"
-          className="bg-[#1a1a1a] border-zinc-800 text-zinc-100 placeholder-zinc-600 focus:border-zinc-700"
-        />
-      </TextField>
+  const handleSubmit = async (e) => {
+  e.preventDefault();
+  setLoading(true);
 
-      {/* INDUSTRY */}
-      <div className="flex flex-col gap-2">
-        <Label className="text-zinc-300">Industry</Label>
+  try {
+    const formData = new FormData(e.currentTarget);
 
-        <Select name="industry">
-          <Select.Trigger className="bg-[#1a1a1a] border-zinc-800 text-zinc-100">
-            <Select.Value placeholder="Select your industry" />
-            <Select.Indicator />
-          </Select.Trigger>
+    const companyName = formData.get("companyName");
+    const websiteUrl = formData.get("websiteUrl");
+    const location = formData.get("location");
+    const description = formData.get("description");
 
-          <Select.Popover>
-            <ListBox className="bg-[#1a1a1a] border-zinc-800 text-zinc-100">
-              <ListBox.Item id="tech">Technology</ListBox.Item>
-              <ListBox.Item id="software">Software</ListBox.Item>
-              <ListBox.Item id="finance">Finance</ListBox.Item>
-              <ListBox.Item id="health">Healthcare</ListBox.Item>
-              <ListBox.Item id="education">Education</ListBox.Item>
-              <ListBox.Item id="ecommerce">E-commerce</ListBox.Item>
-            </ListBox>
-          </Select.Popover>
-        </Select>
-      </div>
+    let logoUrl = "";
 
-      {/* WEBSITE */}
-      <TextField>
-        <Label className="text-zinc-300">Company Website</Label>
+    if (logo && logo.size > 0) {
+      const imageData = new FormData();
+      imageData.append("image", logo);
 
-        <div className="flex rounded-md overflow-hidden bg-[#1a1a1a] border border-zinc-800 focus-within:border-zinc-700">
-          <span className="bg-[#262626] px-4 py-2 text-sm text-zinc-500 border-r border-zinc-800 flex items-center">
-            https://
-          </span>
+      const imageRes = await fetch(
+        `https://api.imgbb.com/1/upload?key=${process.env.NEXT_PUBLIC_IMGBB_API_KEY}`,
+        {
+          method: "POST",
+          body: imageData,
+        }
+      );
 
-          <Input
-            name="websiteUrl"
-            placeholder="www.yourcompany.com"
-            className="bg-transparent border-none focus:ring-0 flex-1 text-zinc-100 placeholder-zinc-600"
-          />
-        </div>
-      </TextField>
+      const imageResult = await imageRes.json();
 
-      {/* LOCATION */}
-      <TextField>
-        <Label className="text-zinc-300">Office Location</Label>
+      if (imageResult?.success) {
+        logoUrl = imageResult.data.url;
+      }
+    }
 
-        <div className="relative">
-          <FaLocationDot className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-500" />
+    const CompanyData = {
+      companyName,
+      industry,
+      websiteUrl: websiteUrl?.startsWith("https://")
+        ? websiteUrl
+        : `https://${websiteUrl}`,
+      location,
+      employeeCount,
+      description,
+      logo: logoUrl,
+    };
 
-          <Input
-            name="location"
-            placeholder="e.g. Dhaka, Bangladesh"
-            className="w-full pl-11 bg-[#1a1a1a] border-zinc-800 text-zinc-100 placeholder-zinc-600 focus:border-zinc-700"
-          />
-        </div>
-      </TextField>
-
-      {/* COMPANY SIZE */}
-      <div className="flex flex-col gap-2">
-        <Label className="text-zinc-300">Company Size</Label>
-
-        <Select name="employeeCount">
-          <Select.Trigger className="bg-[#1a1a1a] border-zinc-800 text-zinc-100">
-            <Select.Value placeholder="Select company size" />
-            <Select.Indicator />
-          </Select.Trigger>
-
-          <Select.Popover>
-            <ListBox className="bg-[#1a1a1a] border-zinc-800 text-zinc-100">
-              <ListBox.Item id="1-10">1–10 employees</ListBox.Item>
-              <ListBox.Item id="11-50">11–50 employees</ListBox.Item>
-              <ListBox.Item id="51-200">51–200 employees</ListBox.Item>
-              <ListBox.Item id="201+">201+ employees</ListBox.Item>
-            </ListBox>
-          </Select.Popover>
-        </Select>
-      </div>
-
-      {/* LOGO */}
-      <div className="flex flex-col gap-2">
-        <Label className="text-zinc-300">Company Logo</Label>
-
-        <label className="flex items-center gap-4 cursor-pointer">
-          <div className="h-14 w-14 flex items-center justify-center border border-dashed border-zinc-700 bg-[#1a1a1a] rounded-xl text-zinc-400 hover:text-zinc-200">
-            <FiUpload size={20} />
-          </div>
-
-          <div>
-            <p className="text-sm font-medium text-zinc-200">
-              Upload company logo
-            </p>
-            <p className="text-xs text-zinc-500 mt-0.5">
-              Helps candidates recognize your brand
-            </p>
-          </div>
-
-          <input type="file" name="companyLogo" hidden />
-        </label>
-      </div>
-
-      {/* DESCRIPTION */}
-      <div className="md:col-span-2">
-        <Label className="text-zinc-300">Company Description</Label>
-
-        <TextArea
-          name="description"
-          rows={5}
-          placeholder="Describe your company, what roles you hire for, and your work culture..."
-          className="w-full mt-2 bg-[#1a1a1a] border-zinc-800 text-zinc-100 placeholder-zinc-600 focus:border-zinc-700 rounded-lg p-3"
-        />
-      </div>
-
-      {/* BUTTONS */}
-      <div className="md:col-span-2 flex justify-end gap-3 border-t border-zinc-800 pt-5 mt-2">
-        <Button
-          type="button"
-          className="px-5 py-2.5 rounded-lg border border-zinc-800 text-zinc-300 bg-[#141414] hover:bg-[#1c1c1c]"
-        >
-          Cancel
-        </Button>
-
-        <Button
-          type="submit"
-          className="px-5 py-2.5 rounded-lg bg-white text-black font-semibold hover:bg-zinc-200"
-        >
-          Register Company
-        </Button>
-      </div>
-    </form>
-              </Surface>
-            </Modal.Body>
-            <Modal.Footer>
-            </Modal.Footer>
-          </Modal.Dialog>
-        </Modal.Container>
-      </Modal.Backdrop>
-    </Modal>
-        </div>
+    console.log("FINAL DATA:", CompanyData);
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_SERVER_URL}/api/companies`,
+      {
+        method: "POST",
+        headers: {
+          "Content-type": "application/json",
+        },
+        body: JSON.stringify(CompanyData),
+      }
     );
+
+    const dataCompany = await res.json();
+    console.log(dataCompany);
+    
+      if (dataCompany) {
+        toast.success("Job Added Successfully");
+
+        setTimeout(() => {
+          router.push("/dashboard/recruiter/my-company");
+        }, 1000);
+      } else {
+        toast.error("Failed to post job");
+      }
+  } catch (error) {
+    toast.error("Something went wrong");
+    console.log(error);
+  } finally {
+    setLoading(false);
+  }
+};
+
+  return (
+    <div>
+      <Modal>
+        <Button className="px-4 sm:px-5 py-2.5 rounded-lg bg-white text-black font-semibold hover:bg-zinc-200 text-sm sm:text-base">
+          Register Your Company
+        </Button>
+
+        <Modal.Backdrop variant="blur">
+          <Modal.Container placement="auto">
+            <Modal.Dialog className="w-[95vw] sm:max-w-2xl md:max-w-3xl lg:max-w-4xl">
+              <Modal.CloseTrigger />
+
+              <Modal.Body className="p-3 sm:p-5 md:p-6">
+                <Surface>
+                  <form
+                    onSubmit={handleSubmit}
+                    className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5 md:gap-6 bg-[#121212] p-4 sm:p-5 md:p-6 rounded-xl border border-zinc-800"
+                  >
+                    {/* HEADER */}
+                    <div className="sm:col-span-2 border-b border-zinc-800 pb-3 sm:pb-4">
+                      <h2 className="text-lg sm:text-xl font-semibold text-zinc-100">
+                        Register Your Company to Start Hiring
+                      </h2>
+                      <p className="text-xs sm:text-sm text-zinc-400 mt-1">
+                        Create your company profile and start hiring easily.
+                      </p>
+                    </div>
+
+                    {/* COMPANY NAME */}
+                    <TextField>
+                      <Label className="text-zinc-300 text-sm sm:text-base">
+                        Company Name
+                      </Label>
+                      <Input name="companyName" placeholder="Company name" />
+                    </TextField>
+
+                    {/* INDUSTRY */}
+                    <div className="flex flex-col gap-2">
+                      <Label className="text-zinc-300 text-sm sm:text-base">
+                        Industry
+                      </Label>
+
+                      <Select
+  selectedKeys={industry ? [industry] : []}
+  onSelectionChange={(keys) =>
+    setIndustry(Array.from(keys)[0])
+  }
+  onOpenChange={(open) => setIndustryOpen(open)}
+>
+  <Select.Trigger>
+    <div className="flex items-center justify-between w-full">
+      <Select.Value placeholder="Select industry" />
+
+      <FaChevronDown
+        className={`transition-transform duration-200 ${
+          industryOpen ? "rotate-180" : "rotate-0"
+        }`}
+      />
+    </div>
+  </Select.Trigger>
+
+  <Select.Popover>
+    <ListBox>
+      <ListBox.Item id="tech">Technology</ListBox.Item>
+      <ListBox.Item id="software">Software</ListBox.Item>
+      <ListBox.Item id="finance">Finance</ListBox.Item>
+      <ListBox.Item id="health">Healthcare</ListBox.Item>
+      <ListBox.Item id="education">Education</ListBox.Item>
+      <ListBox.Item id="ecommerce">E-commerce</ListBox.Item>
+    </ListBox>
+  </Select.Popover>
+</Select>
+                    </div>
+
+                    {/* WEBSITE */}
+                    <TextField>
+                      <Label className="text-zinc-300 text-sm sm:text-base">
+                        Website
+                      </Label>
+                      <Input name="websiteUrl" placeholder="yourcompany.com" />
+                    </TextField>
+
+                    {/* LOCATION */}
+                    <TextField>
+                      <Label className="text-zinc-300 text-sm sm:text-base">
+                        Location
+                      </Label>
+                      <div className="relative">
+                        <FaLocationDot className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-500" />
+                        <Input
+                          name="location"
+                          placeholder="Dhaka, Bangladesh"
+                          className="pl-11 w-full"
+                        />
+                      </div>
+                    </TextField>
+
+                    {/* COMPANY SIZE */}
+                    <div className="flex flex-col gap-2">
+                      <Label className="text-zinc-300 text-sm sm:text-base">
+                        Employee Count Range
+                      </Label>
+
+                      <Select
+  selectedKeys={employeeCount ? [employeeCount] : []}
+  onSelectionChange={(keys) =>
+    setEmployeeCount(Array.from(keys)[0])
+  }
+  onOpenChange={(open) => setIsOpen(open)}
+>
+  <Select.Trigger>
+    <div className="flex items-center justify-between w-full">
+      <Select.Value placeholder="Select size" />
+
+      <FaChevronDown
+        className={`transition-transform duration-200 ${
+          isOpen ? "rotate-180" : "rotate-0"
+        }`}
+      />
+    </div>
+  </Select.Trigger>
+
+  <Select.Popover>
+    <ListBox>
+      <ListBox.Item id="1-10">1–10 employees</ListBox.Item>
+      <ListBox.Item id="11-50">11–50 employees</ListBox.Item>
+      <ListBox.Item id="51-200">51–200 employees</ListBox.Item>
+      <ListBox.Item id="200+">200+ employees</ListBox.Item>
+    </ListBox>
+  </Select.Popover>
+</Select>
+                    </div>
+
+                    {/* LOGO */}
+                    <div className="flex flex-col gap-2">
+                      <Label className="text-zinc-300 text-sm sm:text-base">
+                        Logo
+                      </Label>
+
+                      <label className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4 cursor-pointer">
+                        <div className="h-12 w-12 sm:h-14 sm:w-14 flex items-center justify-center border border-dashed border-zinc-700 rounded-xl overflow-hidden">
+                          {logoPreview ? (
+                            <img
+                              src={logoPreview}
+                              alt="logo"
+                              className="h-full w-full object-cover"
+                            />
+                          ) : (
+                            <FiUpload />
+                          )}
+                        </div>
+
+                        <input
+                          type="file"
+                          name="companyLogo"
+                          hidden
+                          accept="image/*"
+                          onChange={(e) => {
+                            const file = e.target.files[0];
+                            setLogo(file);
+
+                            if (file) {
+                              setLogoPreview(URL.createObjectURL(file));
+                            }
+                          }}
+                        />
+                      </label>
+                    </div>
+
+                    {/* DESCRIPTION */}
+                    <div className="sm:col-span-2">
+                      <div className="flex flex-col gap-2">
+                        <Label className="text-zinc-300 text-sm sm:text-base">
+                          Description
+                        </Label>
+                        <TextArea
+                          name="description"
+                          rows={4}
+                          className="sm:rows-5"
+                          placeholder="About your company..."
+                        />
+                      </div>
+                    </div>
+
+                    {/* BUTTONS */}
+                    <div className="sm:col-span-2 flex flex-col sm:flex-row justify-end gap-2 sm:gap-3">
+                      <Button type="button" className="w-full sm:w-auto">
+                        Cancel
+                      </Button>
+
+                      <Button
+                        type="submit"
+                        isDisabled={loading}
+                        className="bg-white text-black w-full sm:w-auto"
+                      >
+                        {loading ? "Submitting..." : "Register Company"}
+                      </Button>
+                    </div>
+                  </form>
+                </Surface>
+              </Modal.Body>
+            </Modal.Dialog>
+          </Modal.Container>
+        </Modal.Backdrop>
+      </Modal>
+      <Toaster/>
+    </div>
+  );
 };
 
 export default RegisterCompany;

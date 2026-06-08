@@ -58,7 +58,7 @@ const PostJobs = () => {
       description: formData.get("description"),
       banner: formData.get("banner"),
     };
-
+    
     try {
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_SERVER_URL}/api/jobs`,

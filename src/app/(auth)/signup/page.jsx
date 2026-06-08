@@ -18,7 +18,7 @@ import { BiCheck } from "react-icons/bi";
 import { FaEye, FaEyeSlash } from "react-icons/fa6";
 import { FcGoogle } from "react-icons/fc";
 
-const Page = () => {
+const SignUpPage = () => {
   const [message, setMessage] = useState("");
   const [isSuccess, setIsSuccess] = useState(false);
   const [showPassword, setShowPassword] = useState(false)
@@ -237,4 +237,4 @@ const Page = () => {
   );
 };
 
-export default Page;
+export default SignUpPage;
