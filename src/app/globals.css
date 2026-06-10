@@ -1,2 +1,6 @@
 @import "tailwindcss";
 @import "@heroui/styles";
+
+.editFormBg {
+    background-color: #0b0b0d !important;
+}

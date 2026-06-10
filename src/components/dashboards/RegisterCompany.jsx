@@ -16,7 +16,8 @@ import { FiUpload, FiMapPin } from "react-icons/fi";
 import toast, { Toaster } from "react-hot-toast";
 import { useRouter } from "next/navigation";
 
-const RegisterCompany = () => {
+const RegisterCompany = ({recruiter}) => {
+  console.log(recruiter)
   const router = useRouter();
 
   const [logo, setLogo] = useState(null);
@@ -64,6 +65,7 @@ const RegisterCompany = () => {
           ? data.websiteUrl
           : `https://${data.websiteUrl}`,
         logo: logoUrl,
+        recruiterId : recruiter.id
       };
 
       const res = await fetch(
