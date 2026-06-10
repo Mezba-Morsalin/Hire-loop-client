@@ -53,6 +53,10 @@ const page = async () => {
               <h4 className='text-xl font-bold'>{company.employeeCount}</h4>
             </div>
           </div>
+          <div className='space-y-3 mt-6'>
+              <p className='text-xl font-bold'>About out vision & Culture</p>
+              <p className='text-gray-300 bg-[#121212] p-5 rounded-2xl'>{company.description}</p>
+            </div>
         </div> : <div className="flex flex-col items-center justify-center min-h-screen text-center px-4">
 
       {/* Image Wrapper */}
