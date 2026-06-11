@@ -80,7 +80,7 @@ const PostJobs = ({company}) => {
         toast.success("Job Added Successfully");
 
         setTimeout(() => {
-          router.push("/dashboard/recruiter/jobs");
+          router.push("/dashboard/recruiter");
         }, 1000);
       } else {
         toast.error("Failed to post job");
@@ -91,33 +91,17 @@ const PostJobs = ({company}) => {
   };
 
   return (
-    <div className="flex justify-center items-center mt-6">
-      <Modal>
-        <Button className="border border-gray-500 rounded-xl" variant="ghost">
-          Post a Job
-        </Button>
-
-        <Modal.Backdrop>
-          <Modal.Container placement="auto">
-            <Modal.Dialog className="max-w-4xl overflow-hidden border border-zinc-800 bg-[#0b0b0d] text-white">
-              <Modal.CloseTrigger />
-
-              {/* HEADER */}
-              <Modal.Header className="border-b border-zinc-800 px-8 py-7">
-                <div>
-                  <Modal.Heading className="text-[32px] font-semibold">
+    <div className="border border-gray-500 shadow shadow-gray-500 max-w-2xl mx-auto items-center mt-6 p-10 rounded-2xl">
+                   <div className="mb-8">
+                  <h2 className="text-[32px] font-semibold">
                     Post a New Job
-                  </Modal.Heading>
+                  </h2>
 
                   <p className="mt-2 text-sm text-zinc-400">
                     Fill in details to publish your job.
                   </p>
                 </div>
-              </Modal.Header>
-
-              {/* BODY */}
-              <Modal.Body className="p-8">
-                <form
+      <form
                   onSubmit={handleSubmit}
                   className="grid grid-cols-1 md:grid-cols-2 gap-6"
                 >
@@ -302,18 +286,13 @@ const PostJobs = ({company}) => {
 
                   {/* BUTTONS */}
                   <div className="md:col-span-2 flex justify-end gap-3 border-t border-zinc-800 pt-5">
-                    <Button type="button" slot="close">
+                    <Button className={"border border-gray-500 rounded-xl"} variant="ghost" type="button" slot="close">
                       Cancel
                     </Button>
 
-                    <Button type="submit">Publish Job</Button>
+                    <Button className={'bg-white text-black rounded-xl'} type="submit">Publish Job</Button>
                   </div>
                 </form>
-              </Modal.Body>
-            </Modal.Dialog>
-          </Modal.Container>
-        </Modal.Backdrop>
-      </Modal>
 
       <Toaster />
     </div>
