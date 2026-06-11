@@ -5,18 +5,16 @@ import { Button, Drawer } from "@heroui/react";
 import { LuLayoutDashboard } from "react-icons/lu";
 import { MdOutlineViewCompactAlt } from "react-icons/md";
 import { PiSuitcaseFill } from "react-icons/pi";
-import { FaRegEnvelope } from "react-icons/fa";
-import { IoPersonOutline } from "react-icons/io5";
-import { GoGear } from "react-icons/go";
+import { IoSettingsOutline } from "react-icons/io5"; 
+import { IoMdApps } from "react-icons/io"; 
 import Link from "next/link";
 
 const navItems = [
   { icon: LuLayoutDashboard, href: "/dashboard/recruiter", label: "Dashboard" },
   { icon: MdOutlineViewCompactAlt, href: "/dashboard/recruiter/my-company", label: "My Company" },
   { icon: PiSuitcaseFill, href: "/dashboard/recruiter/jobs", label: "Jobs" },
-  { icon: FaRegEnvelope, href: "#", label: "Messages" },
-  { icon: IoPersonOutline, href: "#", label: "Profile" },
-  { icon: GoGear, href: "#", label: "Settings" },
+  { icon: IoMdApps, href: "/dashboard/recruiter/applications", label: "Applications" },
+  { icon: IoSettingsOutline, href: "/dashboard/recruiter/settings", label: "Settings" },
 ];
 
 const DashboardLinks = () => (

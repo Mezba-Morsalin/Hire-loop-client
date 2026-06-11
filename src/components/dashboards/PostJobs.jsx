@@ -16,7 +16,7 @@ import { FaLocationDot } from "react-icons/fa6";
 import toast, { Toaster } from "react-hot-toast";
 import { useRouter } from "next/navigation";
 
-const PostJobs = () => {
+const PostJobs = ({company}) => {
   const router = useRouter();
 
   const getJobStatus = (deadline) => {
@@ -43,8 +43,8 @@ const PostJobs = () => {
 
     const data = {
       jobTitle: formData.get("jobTitle"),
-      companyName: formData.get("companyName"),
       location: formData.get("location"),
+      industryCategory: formData.get("industryCategory"),
       employmentType: formData.get("employmentType"),
       workMode: formData.get("workMode"),
       experience: formData.get("experience"),
@@ -57,6 +57,8 @@ const PostJobs = () => {
         : [],
       description: formData.get("description"),
       banner: formData.get("banner"),
+      companyId : company?._id,
+      companyName : company?.companyName
     };
     
     try {
@@ -78,7 +80,7 @@ const PostJobs = () => {
         toast.success("Job Added Successfully");
 
         setTimeout(() => {
-          router.push("/dashboard/recruiter");
+          router.push("/dashboard/recruiter/jobs");
         }, 1000);
       } else {
         toast.error("Failed to post job");
@@ -126,10 +128,71 @@ const PostJobs = () => {
                   </TextField>
 
                   {/* Company */}
-                  <TextField>
-                    <Label>Company Name</Label>
-                    <Input name="companyName" />
-                  </TextField>
+                  <div className="flex flex-col gap-2">
+                    <Label>Industry / Category</Label>
+<Select name="industryCategory">
+  <Select.Trigger>
+    <Select.Value placeholder="Select Industry" />
+    <Select.Indicator />
+  </Select.Trigger>
+
+  <Select.Popover>
+    <ListBox>
+      <ListBox.Item id="software-development">
+        Software Development
+      </ListBox.Item>
+      <ListBox.Item id="web-development">
+        Web Development
+      </ListBox.Item>
+      <ListBox.Item id="mobile-development">
+        Mobile Development
+      </ListBox.Item>
+      <ListBox.Item id="ui-ux-design">
+        UI/UX Design
+      </ListBox.Item>
+      <ListBox.Item id="graphic-design">
+        Graphic Design
+      </ListBox.Item>
+      <ListBox.Item id="digital-marketing">
+        Digital Marketing
+      </ListBox.Item>
+      <ListBox.Item id="marketing">
+        Marketing
+      </ListBox.Item>
+      <ListBox.Item id="sales">
+        Sales
+      </ListBox.Item>
+      <ListBox.Item id="business-development">
+        Business Development
+      </ListBox.Item>
+      <ListBox.Item id="finance-accounting">
+        Finance & Accounting
+      </ListBox.Item>
+      <ListBox.Item id="human-resources">
+        Human Resources (HR)
+      </ListBox.Item>
+      <ListBox.Item id="customer-support">
+        Customer Support
+      </ListBox.Item>
+      <ListBox.Item id="data-science">
+        Data Science
+      </ListBox.Item>
+      <ListBox.Item id="ai-ml">
+        AI & Machine Learning
+      </ListBox.Item>
+      <ListBox.Item id="cyber-security">
+        Cyber Security
+      </ListBox.Item>
+      <ListBox.Item id="devops-cloud">
+        DevOps & Cloud
+      </ListBox.Item>
+      <ListBox.Item id="healthcare">
+        Healthcare
+      </ListBox.Item>
+    </ListBox>
+  </Select.Popover>
+</Select>
+                  </div>
 
                   {/* Location */}
                   <TextField>
