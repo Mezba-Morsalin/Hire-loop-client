@@ -51,7 +51,7 @@ const BrowseJobs = ({ job }) => {
         </div>
       </div>
       <div>
-        <Link href="/">
+        <Link href={`/browse-jobs/${job._id}`}>
         <Button variant="ghost" className={'border border-zinc-400 flex items-center gap-2'}>Apply Now <LuSquareArrowOutUpRight/></Button>
         </Link>
       </div>
