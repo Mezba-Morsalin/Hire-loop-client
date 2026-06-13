@@ -1,13 +1,42 @@
 import ManageJobs from '@/components/dashboards/ManageJobs';
-import PostJobs from '@/components/dashboards/PostJobs';
+import { auth } from '@/lib/auth';
+
 import { Button } from '@heroui/react';
+import { headers } from 'next/headers';
 import Link from 'next/link';
 import React from 'react';
 
 const RecruiterJobsPage = async () => {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/jobs`)
-    const jobs = await res.json()
-    console.log(jobs)
+     const session = await auth.api.getSession({
+         headers: await headers(),
+       });
+     
+       const user = session?.user;
+     
+     
+       if (!user) {
+         return <div className="text-white p-10">Unauthorized</div>;
+       }
+     
+       const res1 = await fetch(
+         `${process.env.NEXT_PUBLIC_SERVER_URL}/api/my/companies?recruiterId=${user.id}`,
+         { cache: "no-store" }
+       );
+     
+       const data1 = await res1.json();
+     
+       const company = Array.isArray(data1) ? data1[0] : data1; 
+       console.log("company", company)
+
+const res = await fetch(
+  `${process.env.NEXT_PUBLIC_SERVER_URL}/api/my/jobs?companyId=${company._id}`,
+  { cache: "no-store" }
+);
+
+const data = await res.json();
+const jobs = data?.data || [];
+
+console.log("jobs", jobs);
     return (
         <div>
            <ManageJobs jobs={jobs}></ManageJobs>

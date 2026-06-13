@@ -15,8 +15,11 @@ import { FiUpload } from "react-icons/fi";
 import { FaLocationDot } from "react-icons/fa6";
 import toast, { Toaster } from "react-hot-toast";
 import { useRouter } from "next/navigation";
+import { authClient } from "@/lib/auth-client";
 
 const PostJobs = ({company}) => {
+  const { data: session} = authClient.useSession();
+    const user = session?.user ?? null;
   const router = useRouter();
 
   const getJobStatus = (deadline) => {
@@ -58,7 +61,8 @@ const PostJobs = ({company}) => {
       description: formData.get("description"),
       banner: formData.get("banner"),
       companyId : company?._id,
-      companyName : company?.companyName
+      companyName : company?.companyName,
+      userId : user._id,
     };
     
     try {

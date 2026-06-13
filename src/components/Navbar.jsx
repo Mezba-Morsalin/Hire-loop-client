@@ -10,8 +10,10 @@ import { FaBars, FaTimes, FaChevronDown } from "react-icons/fa";
 import { authClient } from "@/lib/auth-client";
 import { PuffLoader } from "react-spinners";
 import { motion, AnimatePresence } from "framer-motion";
+import { useRouter } from "next/navigation";
 
 const Navbar = () => {
+  const router = useRouter()
   const { data: session, isPending } = authClient.useSession();
   const user = session?.user ?? null;
 
@@ -27,6 +29,7 @@ const Navbar = () => {
     await authClient.signOut();
     setShowMenu(false);
     setOpen(false);
+    router.push('/')
   };
 
   // Close dropdown on outside click

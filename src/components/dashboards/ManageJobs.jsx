@@ -31,21 +31,15 @@ const statusColor = (status) => {
 };
 
 export default function ManageJobs({ jobs = [] }) {
+
+
   return (
     <Table>
       <Table.ResizableContainer>
-        <Table.Content
-          aria-label="Manage Jobs Table"
-          className="min-w-[1000px]"
-        >
-          {/* Header */}
+        <Table.Content aria-label="Manage Jobs Table" className="min-w-[1000px]">
+
           <Table.Header>
-            <Table.Column
-              isRowHeader
-              id="jobTitle"
-              defaultWidth="1fr"
-              minWidth={220}
-            >
+            <Table.Column isRowHeader id="jobTitle" defaultWidth="1fr" minWidth={220}>
               Job Title
             </Table.Column>
 
@@ -70,7 +64,6 @@ export default function ManageJobs({ jobs = [] }) {
             </Table.Column>
           </Table.Header>
 
-          {/* Body */}
           <Table.Body>
             {jobs.map((job) => {
               const status = getStatus(job.deadline);
@@ -78,40 +71,29 @@ export default function ManageJobs({ jobs = [] }) {
               return (
                 <Table.Row key={job._id} id={job._id}>
                   <Table.Cell>{job.jobTitle}</Table.Cell>
-
                   <Table.Cell>{job.companyName}</Table.Cell>
-
                   <Table.Cell>{job.location}</Table.Cell>
 
                   <Table.Cell>
-                    <Chip
-                      size="sm"
-                      variant="soft"
-                      color={statusColor(status)}
-                    >
+                    <Chip size="sm" variant="soft" color={statusColor(status)}>
                       {status}
                     </Chip>
                   </Table.Cell>
 
-                  <Table.Cell>
-                    {job.deadline || "No Deadline"}
-                  </Table.Cell>
+                  <Table.Cell>{job.deadline || "No Deadline"}</Table.Cell>
 
                   <Table.Cell>
                     <div className="flex gap-2 w-full">
-                      <Button className='flex items-center gap-2' size="sm" variant="outline">
+                      <Button size="sm" variant="outline">
                         <FaEye />
-                        
                       </Button>
 
-                      <Button className='flex items-center gap-2' size="sm" variant="outline">
+                      <Button size="sm" variant="outline">
                         <CiEdit />
-                        
                       </Button>
 
-                      <Button className='flex items-center gap-2' size="sm" variant="danger">
-                        <MdOutlineDeleteForever/>
-                        
+                      <Button size="sm" variant="danger">
+                        <MdOutlineDeleteForever />
                       </Button>
                     </div>
                   </Table.Cell>
