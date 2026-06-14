@@ -17,12 +17,22 @@ import {
 import { BiCheck } from "react-icons/bi";
 import { FaEye, FaEyeSlash } from "react-icons/fa6";
 import { FcGoogle } from "react-icons/fc";
+import { useRouter, useSearchParams } from "next/navigation";
 
 const SigninPage = () => {
   const [message, setMessage] = useState("");
   const [isSuccess, setIsSuccess] = useState(false);
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const router = useRouter();
+  const searchParams = useSearchParams();
+
+const redirectParam = searchParams.get("redirect");
+
+const redirectTo =
+  redirectParam?.startsWith("/")
+    ? redirectParam
+    : "/";
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -34,11 +44,10 @@ const SigninPage = () => {
     const user = Object.fromEntries(formData.entries());
 
     try {
-      const { error } = await authClient.signIn.email({
+      const {data, error } = await authClient.signIn.email({
         email: user.email,
         password: user.password,
         rememberMe: true,
-        callbackURL: "/",
       });
 
       if (error) {
@@ -47,10 +56,13 @@ const SigninPage = () => {
         return;
       }
 
-      setIsSuccess(true);
+      if (data) {
+        setIsSuccess(true);
       setMessage("Welcome back! You have signed in successfully.");
-
       e.target.reset();
+      router.push(redirectTo)
+      }
+
     } catch (error) {
       setIsSuccess(false);
       setMessage("Something went wrong. Please try again.");
@@ -192,7 +204,7 @@ const SigninPage = () => {
         <p className="text-gray-400">Don t have an account?</p>
 
         <Link
-          href="/signup"
+          href={`/signup?redirect=${redirectTo}`}
           className="text-indigo-500 hover:text-indigo-400"
         >
           Sign Up

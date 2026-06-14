@@ -9,6 +9,7 @@ import {
   FaBriefcase,
 } from "react-icons/fa6";
 import Image from "next/image";
+import Link from "next/link";
 
 const JobsDetailsPage = async ({ params }) => {
   const { id } = await params;
@@ -21,12 +22,12 @@ const JobsDetailsPage = async ({ params }) => {
   );
 
   const jobResult = await jobRes.json();
-  const data = jobResult?.data || jobResult;
+  const jobs = jobResult?.data || jobResult;
 
  let company = null;
 
- if(data?.companyId) {
-  const companyRes = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/companies/${data.companyId}`, {
+ if(jobs?.companyId) {
+  const companyRes = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/companies/${jobs.companyId}`, {
     cache : "no-store"
   })
   const companyResult = await companyRes.json();
@@ -59,20 +60,20 @@ const JobsDetailsPage = async ({ params }) => {
       {/* Job Title */}
       <div className="space-y-3">
         <h1 className="text-3xl md:text-4xl font-bold">
-          {data?.jobTitle}
+          {jobs?.jobTitle}
         </h1>
 
         <div className="flex flex-wrap gap-2 items-center">
           <Chip color="primary" variant="flat">
-            {data?.status}
+            {jobs?.status}
           </Chip>
 
           <Chip variant="flat">
-            {data?.employmentType}
+            {jobs?.employmentType}
           </Chip>
 
           <Chip variant="flat">
-            {data?.workMode}
+            {jobs?.workMode}
           </Chip>
         </div>
       </div>
@@ -87,7 +88,7 @@ const JobsDetailsPage = async ({ params }) => {
             </h2>
 
             <p className="text-zinc-600 leading-7">
-              {data?.description}
+              {jobs.description}
             </p>
           </Card>
 
@@ -97,7 +98,7 @@ const JobsDetailsPage = async ({ params }) => {
             </h2>
 
             <div className="flex flex-wrap gap-2">
-              {data?.skills?.map((skill, idx) => (
+              {jobs?.skills?.map((skill, idx) => (
                 <Chip key={idx} color="secondary" variant="flat">
                   {skill}
                 </Chip>
@@ -114,13 +115,13 @@ const JobsDetailsPage = async ({ params }) => {
             <div className="flex items-center gap-2">
               <FaBuilding className="text-indigo-500" />
               <span>
-                {company?.companyName || data?.companyName}
+                {company?.companyName || jobs?.companyName}
               </span>
             </div>
 
             <div className="flex items-center gap-2">
               <FaLocationDot className="text-indigo-500" />
-              <span>{company?.location || data?.location}</span>
+              <span>{company?.location || jobs?.location}</span>
             </div>
           </Card>
 
@@ -130,33 +131,33 @@ const JobsDetailsPage = async ({ params }) => {
             <div className="space-y-2 text-sm">
               <div className="flex items-center gap-2">
                 <FaBriefcase className="text-indigo-500" />
-                <span>{data?.industryCategory}</span>
+                <span>{jobs?.industryCategory}</span>
               </div>
 
               <div className="flex items-center gap-2">
                 <FaUsers className="text-indigo-500" />
-                <span>{data?.vacancies} Vacancies</span>
+                <span>{jobs?.vacancies} Vacancies</span>
               </div>
 
               <div className="flex items-center gap-2">
                 <FaDollarSign className="text-indigo-500" />
-                <span>{data?.salary}</span>
+                <span>{jobs?.salary}</span>
               </div>
 
               <div className="flex items-center gap-2">
                 <FaClock className="text-indigo-500" />
-                <span>Deadline: {data?.deadline}</span>
+                <span>Deadline: {jobs?.deadline}</span>
               </div>
 
               <div className="flex items-center gap-2">
                 <FaClock className="text-indigo-500" />
-                <span>Experience: {data?.experience}</span>
+                <span>Experience: {jobs?.experience}</span>
               </div>
             </div>
           </Card>
 
           <Button className="w-full bg-indigo-600 text-white font-semibold">
-            Apply Now
+            <Link href={`/browse-jobs/${jobs?._id}/apply`}>Apply Now</Link>
           </Button>
         </div>
       </div>

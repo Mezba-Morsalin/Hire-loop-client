@@ -13,6 +13,7 @@ import {
   TextField,
 } from "@heroui/react";
 import Link from "next/link";
+import { useRouter, useSearchParams } from "next/navigation";
 import React, { useState } from "react";
 import { BiCheck } from "react-icons/bi";
 import { FaEye, FaEyeSlash } from "react-icons/fa6";
@@ -23,6 +24,15 @@ const SignUpPage = () => {
   const [isSuccess, setIsSuccess] = useState(false);
   const [showPassword, setShowPassword] = useState(false)
   const [loading, setLoading] = useState(false)
+   const router = useRouter();
+    const searchParams = useSearchParams();
+  
+  const redirectParam = searchParams.get("redirect");
+  
+  const redirectTo =
+    redirectParam?.startsWith("/")
+      ? redirectParam
+      : "/";
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -35,13 +45,12 @@ const SignUpPage = () => {
     console.log(user)
 
     try {
-      const { error } = await authClient.signUp.email({
+      const {data, error } = await authClient.signUp.email({
         name: user.name,
         image: user.image,
         email: user.email,
         password: user.password,
         role : user.role,
-        callbackURL: "/",
       });
 
       if (error) {
@@ -50,12 +59,15 @@ const SignUpPage = () => {
         return;
       }
 
-      setIsSuccess(true);
+      if (data) {
+        setIsSuccess(true);
       setMessage(
         "Your account has been created successfully."
       );
 
       e.target.reset();
+      router.push(redirectTo)
+      }
     } catch (err) {
       setIsSuccess(false);
       setMessage("Something went wrong. Please try again.");
@@ -231,7 +243,7 @@ const SignUpPage = () => {
       </div>
       <div className="flex justify-center items-center gap-3 mt-4">
         <p className="text-gray-400">Already Have an Account?</p>
-        <Link href={'/signin'} className="text-indigo-500">Sign In</Link>
+        <Link href={`/signin?redirect=${redirectTo}`} className="text-indigo-500">Sign In</Link>
       </div>
     </div>
   );
