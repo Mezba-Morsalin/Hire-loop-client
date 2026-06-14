@@ -16,18 +16,12 @@ import {
   FaPhone,
   FaLink,
   FaPaperPlane,
-  FaFilePdf,
 } from "react-icons/fa6";
+import toast, { Toaster } from "react-hot-toast";
 
 const ApplyJobs = ({ jobs, applicant }) => {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
-  const [resume, setResume] = useState(null);
-
-  const handleFileChange = (e) => {
-    const file = e.target.files?.[0];
-    setResume(file);
-  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -41,41 +35,65 @@ const ApplyJobs = ({ jobs, applicant }) => {
       email: formData.get("email"),
       phone: formData.get("phone"),
       portfolio: formData.get("portfolio"),
+      resumeUrl: formData.get("resumeUrl"),
       coverLetter: formData.get("coverLetter"),
-      resume,
       jobId: jobs?._id,
-      applicantId: applicant?._id,
+      companyName: jobs?.companyName,
+      applicantId: applicant?.id,
     };
 
-    console.log("APPLICATION PAYLOAD:", payload);
+    // console.log("APPLICATION PAYLOAD:", payload);
+    try {
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_SERVER_URL}/api/applicants`,
+    {
+      method: "POST",
+      cache: "no-store",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload),
+    }
+  );
 
-    // 👉 API call korba ekhane
-    // await fetch("/api/apply", { method: "POST", body: ... })
+  const postApplication = await res.json();
+  console.log("application", postApplication);
 
+  if (res.ok && postApplication.insertedId) {
     setMessage("Application submitted successfully!");
-    setLoading(false);
+    toast.success("Application submitted successfully!");
+  } else {
+    toast.error(postApplication.message || "Application submission failed");
+  }
+} catch (error) {
+  console.error(error);
+  toast.error("Something went wrong");
+} finally {
+  setLoading(false);
+}
   };
 
   return (
-    <div className="max-w-3xl mx-auto  space-y-8 border border-zinc-600 rounded-2xl p-12">
+    <div className="max-w-3xl mx-auto border border-zinc-600 rounded-2xl p-12 space-y-8">
 
-      {/* HEADER */}
+      {/* Header */}
       <div className="space-y-2 border-b pb-5">
         <h1 className="text-3xl font-bold text-indigo-500">
           Apply for {jobs?.jobTitle}
         </h1>
 
         <p className="text-gray-400">
-          Apply to <span className="text-white font-semibold">
+          Apply to{" "}
+          <span className="text-white font-semibold">
             {jobs?.companyName}
-          </span> by filling out the form below
+          </span>{" "}
+          by filling out the form below.
         </p>
       </div>
 
-      {/* FORM */}
       <form onSubmit={handleSubmit} className="space-y-6">
 
-        {/* PERSONAL INFO */}
+        {/* Personal Information */}
         <div className="space-y-3">
           <h2 className="text-lg font-semibold text-white">
             👤 Personal Information
@@ -93,7 +111,10 @@ const ApplyJobs = ({ jobs, applicant }) => {
             <Label className="flex items-center gap-2">
               <FaEnvelope /> Email Address
             </Label>
-            <Input placeholder="you@example.com" />
+            <Input
+              type="email"
+              placeholder="you@example.com"
+            />
             <FieldError />
           </TextField>
 
@@ -105,7 +126,7 @@ const ApplyJobs = ({ jobs, applicant }) => {
           </TextField>
         </div>
 
-        {/* LINKS */}
+        {/* Professional Links */}
         <div className="space-y-3">
           <h2 className="text-lg font-semibold text-white">
             🌐 Professional Links
@@ -119,7 +140,32 @@ const ApplyJobs = ({ jobs, applicant }) => {
           </TextField>
         </div>
 
-        {/* COVER LETTER */}
+        {/* Resume URL */}
+        <div className="space-y-3">
+          <h2 className="text-lg font-semibold text-white">
+            📎 Resume Link
+          </h2>
+
+          <TextField isRequired name="resumeUrl">
+            <Label className="flex items-center gap-2">
+              <FaLink /> Resume URL
+            </Label>
+
+            <Input
+              type="url"
+              placeholder="https://drive.google.com/file/... or https://..."
+            />
+
+            <FieldError />
+          </TextField>
+
+          <p className="text-sm text-gray-400">
+            Upload your resume to Google Drive, Dropbox, OneDrive,
+            Cloudinary, or any cloud storage and paste the public link here.
+          </p>
+        </div>
+
+        {/* Cover Letter */}
         <div className="space-y-3">
           <h2 className="text-lg font-semibold text-white">
             📄 Cover Letter
@@ -135,52 +181,9 @@ const ApplyJobs = ({ jobs, applicant }) => {
           </TextField>
         </div>
 
-        {/* RESUME */}
-        <div className="space-y-3">
-  <h2 className="text-lg font-semibold text-white">
-    📎 Resume Upload
-  </h2>
-
-  <div className="space-y-2">
-
-    {/* 🔥 CUSTOM UPLOAD BUTTON */}
-    <label
-      htmlFor="resume-upload"
-      className="flex flex-col items-center justify-center gap-2 cursor-pointer border-2 border-dashed border-gray-600 rounded-xl p-6 hover:border-indigo-500 transition"
-    >
-      <FaFilePdf className="text-2xl text-indigo-400" />
-
-      <p className="text-white font-medium">
-        Click to upload your resume
-      </p>
-
-      <p className="text-sm text-gray-400">
-        PDF only (Max 5MB)
-      </p>
-    </label>
-
-    {/* HIDDEN INPUT */}
-    <input
-      id="resume-upload"
-      type="file"
-      accept="application/pdf"
-      onChange={handleFileChange}
-      className="hidden"
-    />
-
-    {/* FILE NAME PREVIEW */}
-    {resume && (
-      <p className="text-sm text-green-400 flex items-center gap-2">
-        <FaFilePdf />
-        {resume.name}
-      </p>
-    )}
-
-  </div>
-</div>
-
-        {/* SUBMIT */}
+        {/* Submit */}
         <div className="pt-5 border-t">
+
           <Button
             type="submit"
             isDisabled={loading}
@@ -197,11 +200,18 @@ const ApplyJobs = ({ jobs, applicant }) => {
           </Button>
 
           <p className="text-center text-sm text-gray-500 mt-2">
-            Make sure all information is correct before submitting
+            Make sure all information is correct before submitting.
           </p>
+
+          {message && (
+            <p className="text-center text-green-500 mt-4">
+              {message}
+            </p>
+          )}
         </div>
 
       </form>
+      <Toaster/>
     </div>
   );
 };
