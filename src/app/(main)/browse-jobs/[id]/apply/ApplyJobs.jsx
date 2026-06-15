@@ -18,8 +18,10 @@ import {
   FaPaperPlane,
 } from "react-icons/fa6";
 import toast, { Toaster } from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 const ApplyJobs = ({ jobs, applicant }) => {
+  const router = useRouter()
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
 
@@ -57,11 +59,14 @@ const ApplyJobs = ({ jobs, applicant }) => {
   );
 
   const postApplication = await res.json();
-  console.log("application", postApplication);
 
   if (res.ok && postApplication.insertedId) {
     setMessage("Application submitted successfully!");
     toast.success("Application submitted successfully!");
+    
+    setTimeout(() => {
+  router.push('/browse-jobs');
+}, 2000);
   } else {
     toast.error(postApplication.message || "Application submission failed");
   }
