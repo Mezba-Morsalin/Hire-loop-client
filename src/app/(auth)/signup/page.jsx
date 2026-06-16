@@ -43,7 +43,7 @@ const SignUpPage = () => {
     const formData = new FormData(e.currentTarget);
     const user = Object.fromEntries(formData.entries());
     console.log(user)
-
+    const plan = user.role === "seeker" ? "seeker_free" : "recruiter_free"
     try {
       const {data, error } = await authClient.signUp.email({
         name: user.name,
@@ -51,6 +51,7 @@ const SignUpPage = () => {
         email: user.email,
         password: user.password,
         role : user.role,
+        plan
       });
 
       if (error) {

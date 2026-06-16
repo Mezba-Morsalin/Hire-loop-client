@@ -3,6 +3,9 @@ import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import React from "react";
 import ApplyJobs from "./ApplyJobs";
+import Link from "next/link";
+import { Button } from "@heroui/react";
+import { RiSendPlane2Line } from "react-icons/ri";
 
 const ApplyPage = async ({ params }) => {
   const { id } = await params;
@@ -42,7 +45,7 @@ const ApplyPage = async ({ params }) => {
 
   // Fetch user applications
   const applicantRes = await fetch(
-    `${process.env.NEXT_PUBLIC_SERVER_URL}/api/applicants?applicantsId=${user.id}`,
+    `${process.env.NEXT_PUBLIC_SERVER_URL}/api/applicants?applicantId=${user.id}`,
     {
       cache: "no-store",
     }
@@ -51,12 +54,11 @@ const ApplyPage = async ({ params }) => {
   const applicantResult = await applicantRes.json();
   const applications = applicantResult?.data || applicantResult || [];
 
-  // Dummy plan (replace with database plan later)
-  const plan = {
-    name: "Free",
-    maxApplicationPerMonth: 3,
-  };
 
+  const planRes = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/plans?plan_id=${user?.plan || "seeker_free"}`, {
+    cache : "no-store"
+  });
+  const plan = await planRes.json();
   const remainingApplications =
     plan.maxApplicationPerMonth - applications.length;
 
@@ -162,6 +164,11 @@ const ApplyPage = async ({ params }) => {
               You can apply again when your monthly quota resets or after
               upgrading your plan.
             </p>
+            <div className="mt-5">
+              <Link  href={'/pricing'}>
+            <Button className={'rounded-xl text-red-500 inline-flex gap-2 items-center'} variant="secondary">View Plans <RiSendPlane2Line/></Button>
+            </Link>
+            </div>
           </div>
         )}
       </div>
