@@ -60,19 +60,32 @@ const Navbar = () => {
     document.body.style.overflow = open ? "hidden" : "auto";
   }, [open]);
 
-  const MainLinks = (
-    <>
-      <li onClick={() => setOpen(false)}>
-        <NavLink href="/browse-jobs">Browse Jobs</NavLink>
-      </li>
-      <li onClick={() => setOpen(false)}>
-        <NavLink href="/company">Company</NavLink>
-      </li>
-      <li onClick={() => setOpen(false)}>
-        <NavLink href="/pricing">Pricing</NavLink>
-      </li>
-    </>
+  const dashboardLink =
+  user?.role === "recruiter"
+    ? "/dashboard/recruiter"
+    : "/dashboard/seeker";
+
+const MainLinks = [
+  <li key="browse" onClick={() => setOpen(false)}>
+    <NavLink href="/browse-jobs">Browse Jobs</NavLink>
+  </li>,
+
+  <li key="company" onClick={() => setOpen(false)}>
+    <NavLink href="/company">Company</NavLink>
+  </li>,
+
+  <li key="pricing" onClick={() => setOpen(false)}>
+    <NavLink href="/pricing">Pricing</NavLink>
+  </li>,
+];
+
+if (user) {
+  MainLinks.push(
+    <li key="dashboard" onClick={() => setOpen(false)}>
+      <NavLink href={dashboardLink}>Dashboard</NavLink>
+    </li>
   );
+}
 
   return (
     <header className="sticky top-0 z-50 backdrop-blur-md bg-[#222222]/95 border-b border-white/10">
@@ -147,11 +160,6 @@ const Navbar = () => {
                         transition={{ duration: 0.2, ease: "easeOut" }}
                         className="absolute right-0 top-20 w-56 bg-[#1b1b1b] border border-white/10 rounded-2xl p-4 shadow-xl backdrop-blur-md"
                       >
-                        <Link href="/dashboard/recruiter">
-                          <Button className="bg-linear-to-r from-indigo-500 to-indigo-600 bg-clip-text text-transparent font-bold w-full">
-                            Dashboard
-                          </Button>
-                        </Link>
 
                         <Button
                           onClick={handleSignOut}

@@ -42,6 +42,7 @@ const ApplyJobs = ({ jobs, applicant }) => {
       jobId: jobs?._id,
       companyName: jobs?.companyName,
       applicantId: applicant?.id,
+      jobTitle : jobs?.jobTitle
     };
 
     // console.log("APPLICATION PAYLOAD:", payload);
