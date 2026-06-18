@@ -51,8 +51,8 @@ const SeekerApplications = ({applications}) => {
             <Table.Cell>
             {format(new Date(item.createdAt), "dd MMMM yyyy, hh:mm a")}
             </Table.Cell>
-            <Table.Cell>
-
+            <Table.Cell >
+              <p className='text-green-500'>{item.status}</p>
             </Table.Cell>
             <Table.Cell>
               Details

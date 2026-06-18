@@ -5,6 +5,7 @@ import { Button, Drawer } from "@heroui/react";
 import { LuLayoutDashboard } from "react-icons/lu";
 import {
   MdOutlineCreditCard,
+  MdOutlinePeopleAlt,
   MdOutlineSearch,
   MdOutlineViewCompactAlt,
 } from "react-icons/md";
@@ -17,6 +18,7 @@ import { IoMdApps } from "react-icons/io";
 import { BiNews } from "react-icons/bi";
 import Link from "next/link";
 import { authClient } from "@/lib/auth-client";
+import { HiOutlineBuildingOffice2 } from "react-icons/hi2";
 
 const DashboardSideBar = () => {
   const { data: session, isPending } = authClient.useSession();
@@ -52,42 +54,45 @@ const DashboardSideBar = () => {
     },
   ];
 
-  const seekerNavLinks = [
-    {
-      icon: LuLayoutDashboard,
-      href: "/dashboard/seeker",
-      label: "Dashboard",
-    },
-    {
-      icon: MdOutlineSearch,
-      href: "/dashboard/seeker/jobs",
-      label: "Jobs",
-    },
-    {
-      icon: IoBookmarkOutline,
-      href: "/dashboard/seeker/saved-jobs",
-      label: "Saved Jobs",
-    },
-    {
-      icon: BiNews,
-      href: "/dashboard/seeker/applications",
-      label: "Applications",
-    },
-    {
-      icon: MdOutlineCreditCard,
-      href: "/dashboard/seeker/billing",
-      label: "Billing",
-    },
-    {
-      icon: IoSettingsOutline,
-      href: "/dashboard/seeker/settings",
-      label: "Settings",
-    },
-  ];
+  
+ const adminNavLinks = [
+  {
+    icon: LuLayoutDashboard,
+    href: "/dashboard/admin",
+    label: "Dashboard",
+  },
+  {
+    icon: PiSuitcaseFill,
+    href: "/dashboard/admin/jobs",
+    label: "Jobs",
+  },
+  {
+    icon: MdOutlinePeopleAlt,
+    href: "/dashboard/admin/users",
+    label: "Users",
+  },
+  {
+    icon: HiOutlineBuildingOffice2,
+    href: "/dashboard/admin/companies",
+    label: "Companies",
+  },
+  {
+    icon: MdOutlineCreditCard,
+    href: "/dashboard/admin/billing",
+    label: "Billing",
+  },
+  {
+    icon: IoSettingsOutline,
+    href: "/dashboard/admin/settings",
+    label: "Settings",
+  },
+];
+const seekerNavLinks = [ { icon: LuLayoutDashboard, href: "/dashboard/seeker", label: "Dashboard", }, { icon: MdOutlineSearch, href: "/dashboard/seeker/jobs", label: "Jobs", }, { icon: IoBookmarkOutline, href: "/dashboard/seeker/saved-jobs", label: "Saved Jobs", }, { icon: BiNews, href: "/dashboard/seeker/applications", label: "Applications", }, { icon: MdOutlineCreditCard, href: "/dashboard/seeker/billing", label: "Billing", }, { icon: IoSettingsOutline, href: "/dashboard/seeker/settings", label: "Settings", }, ];
 
   const navLinkMap = {
     seeker: seekerNavLinks,
     recruiter: recruiterNavLinks,
+    admin : adminNavLinks,
   };
 
   const navItems = navLinkMap[user?.role] || [];

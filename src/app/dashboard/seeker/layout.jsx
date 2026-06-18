@@ -14,7 +14,7 @@ const requireRole = async (role) => {
   const user = await getSessionUser();
 
   if (!user) {
-    redirect("/login");
+    redirect("/signin");
   }
 
   if (user.role !== role) {

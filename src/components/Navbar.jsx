@@ -61,7 +61,9 @@ const Navbar = () => {
   }, [open]);
 
   const dashboardLink =
-  user?.role === "recruiter"
+  user?.role === "admin"
+    ? "/dashboard/admin"
+    : user?.role === "recruiter"
     ? "/dashboard/recruiter"
     : "/dashboard/seeker";
 

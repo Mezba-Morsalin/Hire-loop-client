@@ -24,10 +24,10 @@ const requireRole = async (role) => {
   return user;
 };
 
-const RecruiterLayout = async ({ children }) => {
-  await requireRole("recruiter");
+const SeekerLayout = async ({ children }) => {
+  await requireRole("admin");
 
   return <>{children}</>;
 };
 
-export default RecruiterLayout;
+export default SeekerLayout;
