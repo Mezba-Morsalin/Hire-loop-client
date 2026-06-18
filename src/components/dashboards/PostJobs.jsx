@@ -340,7 +340,36 @@ const PostJobs = ({company}) => {
                     <Button className={'bg-white text-black rounded-xl'} type="submit">Publish Job</Button>
                   </div>
                 </form>}
+        {company.status === "Rejected" && (
+  <div className="mt-6 rounded-2xl border border-red-700/40 bg-red-500/10 p-6">
+    <div className="flex items-start gap-4">
+      <div className="flex h-12 w-12 items-center justify-center rounded-full bg-red-500/20">
+        ❌
+      </div>
 
+      <div>
+        <h3 className="text-lg font-semibold text-red-400">
+          Company Approval Rejected
+        </h3>
+
+        <p className="mt-2 text-sm text-zinc-300 leading-relaxed">
+          Unfortunately, your company registration has been rejected by the
+          admin team. Please review your company information and submit an
+          updated application for approval.
+        </p>
+
+        <div className="mt-4 inline-flex rounded-full border border-red-700/40 bg-red-500/10 px-4 py-2 text-sm text-red-300">
+          Current Status: Rejected
+        </div>
+
+        <p className="mt-4 text-xs text-zinc-500">
+          Contact support or update your company profile if you believe this
+          decision was made in error.
+        </p>
+      </div>
+    </div>
+  </div>
+)}
       <Toaster />
     </div>
   );
