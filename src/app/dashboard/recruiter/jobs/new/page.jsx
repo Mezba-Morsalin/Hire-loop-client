@@ -16,7 +16,7 @@ const recruiterId = session?.user?.id;
   );
 
   const company = await res.json();
-  console.log("Company", company)
+  // console.log("Company", company)
   return (
     <div>
       <PostJobs company = {company}/>

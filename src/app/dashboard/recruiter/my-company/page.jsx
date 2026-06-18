@@ -8,8 +8,7 @@ import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 import { IoEarthOutline } from "react-icons/io5";
 import EditCompany from "@/components/dashboards/EditCompany";
-import NewJobsPage from "../jobs/new/page";
-import PostJobs from "@/components/dashboards/PostJobs";
+import { redirect } from "next/navigation";
 
 const Page = async () => {
 
@@ -21,7 +20,7 @@ const Page = async () => {
 
 
   if (!user) {
-    return <div className="text-white p-10">Unauthorized</div>;
+    return redirect('/signin')
   }
 
   const res = await fetch(
@@ -32,6 +31,7 @@ const Page = async () => {
   const data = await res.json();
 
   const company = Array.isArray(data) ? data[0] : data;
+  console.log("company", company)
 
   return (
     <div className="text-white">
@@ -39,25 +39,50 @@ const Page = async () => {
         <>
           <div className="bg-[#18181b] p-8 rounded-2xl">
             <div className="flex flex-col md:flex-row justify-between gap-10 items-center">
-              <div className="flex flex-col md:flex-row gap-5 items-center">
-                <Image
-                  src={company.logo || bgImg}
-                  alt="company-logo"
-                  width={120}
-                  height={120}
-                />
+              <div className="flex flex-col md:flex-row gap-6">
+  <Image
+    src={company.logo || bgImg}
+    alt="company-logo"
+    width={120}
+    height={120}
+    className="rounded-lg border border-zinc-800 object-cover"
+  />
 
-                <div className="space-y-3">
-                  <h2 className="text-3xl font-bold">
-                    {company.companyName}
-                  </h2>
+  <div className="flex-1">
+    <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
+      <div>
+        <h2 className="text-3xl font-bold">
+          {company.companyName}
+        </h2>
 
-                  <p className="flex items-center gap-2 text-gray-300">
-                    <IoEarthOutline />
-                    {company.websiteUrl}
-                  </p>
-                </div>
-              </div>
+        <p className="flex items-center gap-2 text-gray-400 mt-2">
+          <IoEarthOutline />
+          <a
+            href={company.websiteUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hover:text-white transition"
+          >
+            {company.websiteUrl}
+          </a>
+        </p>
+      </div>
+
+      <span
+        className={`px-4 py-1 rounded-full text-sm font-medium border
+          ${
+            company.status === "Approved"
+              ? "border-green-700 text-green-500"
+              : company.status === "Rejected"
+              ? "border-red-700 text-red-500"
+              : "border-amber-700 text-amber-500"
+          }`}
+      >
+        {company.status}
+      </span>
+    </div>
+  </div>
+</div>
 
               <div>
                 <EditCompany company={company} />
@@ -123,7 +148,7 @@ const Page = async () => {
           </p>
 
           <div className="flex gap-3 mt-4">
-            <RegisterCompany recruiter={user} />
+            <RegisterCompany company = {company} recruiter={user} />
 
             <Button className="px-5 py-2.5 rounded-lg border border-zinc-800 text-zinc-300 bg-[#141414] hover:bg-[#1c1c1c]">
               View FAQ

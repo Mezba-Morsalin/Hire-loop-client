@@ -26,7 +26,7 @@ const RecruiterJobsPage = async () => {
        const data1 = await res1.json();
      
        const company = Array.isArray(data1) ? data1[0] : data1; 
-       console.log("company", company)
+      //  console.log("company", company)
 
 const res = await fetch(
   `${process.env.NEXT_PUBLIC_SERVER_URL}/api/my/jobs?companyId=${company._id}`,

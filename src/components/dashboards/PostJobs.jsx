@@ -97,15 +97,58 @@ const PostJobs = ({company}) => {
   return (
     <div className="border border-gray-500 shadow shadow-gray-500 max-w-2xl mx-auto items-center mt-6 p-10 rounded-2xl">
                    <div className="mb-8">
-                  <h2 className="text-[32px] font-semibold">
-                    Post a New Job
-                  </h2>
+                  <div className="flex items-start justify-between gap-4">
+  <div className="flex justify-between items-center gap-6">
+    <h2 className="text-[32px] font-semibold">
+      Post a New Job
+    </h2>
+
+  <span
+
+    className={`shrink-0 px-6 py-2 rounded-full text-sm font-medium border
+      ${
+        company.status === "Approved"
+          ? "border-green-700 text-green-500"
+          : company.status === "Rejected"
+          ? "border-red-700 text-red-500"
+          : "border-amber-700 text-amber-500"
+      }`}
+  >
+    {company.status}
+  </span>
+  </div>
+</div>
 
                   <p className="mt-2 text-sm text-zinc-400">
                     Fill in details to publish your job.
                   </p>
+                  {company.status !== "Approved" && (
+  <div className="mt-6 rounded-2xl border border-amber-700/40 bg-amber-500/10 p-6">
+    <div className="flex items-start gap-4">
+      <div className="flex h-12 w-12 items-center justify-center rounded-full bg-amber-500/20">
+        ⏳
+      </div>
+
+      <div>
+        <h3 className="text-lg font-semibold text-amber-400">
+          Company Approval Pending
+        </h3>
+
+        <p className="mt-2 text-sm text-zinc-300 leading-relaxed">
+          Your company profile is currently under review by the admin team.
+          You will be able to publish job postings once your company has been
+          approved.
+        </p>
+
+        <div className="mt-4 inline-flex rounded-full border border-amber-700/40 bg-amber-500/10 px-4 py-2 text-sm text-amber-300">
+          Current Status: {company.status}
+        </div>
+      </div>
+    </div>
+  </div>
+)}
                 </div>
-      <form
+      {company.status === "Approved" && <form
                   onSubmit={handleSubmit}
                   className="grid grid-cols-1 md:grid-cols-2 gap-6"
                 >
@@ -296,7 +339,7 @@ const PostJobs = ({company}) => {
 
                     <Button className={'bg-white text-black rounded-xl'} type="submit">Publish Job</Button>
                   </div>
-                </form>
+                </form>}
 
       <Toaster />
     </div>
