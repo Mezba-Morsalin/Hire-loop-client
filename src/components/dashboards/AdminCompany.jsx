@@ -1,11 +1,38 @@
 "use client";
 
 import React from "react";
-import { Table, Button, Chip, Avatar } from "@heroui/react";
+import { Table, Button, Chip } from "@heroui/react";
 import { format } from "date-fns";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
+import toast, { Toaster } from "react-hot-toast";
 
 const CompanyRegistrations = ({ companies }) => {
+  const router = useRouter()
+  const handleStatusUpdate = async (id, status) => {
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_SERVER_URL}/api/companies/${id}`,
+      {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ status }),
+      }
+    );
+
+    const data = await res.json();
+
+    if (data.modifiedCount > 0) {
+      toast.success("Status updated successfully");
+      router.refresh()
+    }
+  } catch (error) {
+    console.error(error);
+    toast.error("Something Went Wrong")
+  }
+};
   const getStatusChip = (status) => {
     switch (status) {
       case "Approved":
@@ -69,6 +96,9 @@ const CompanyRegistrations = ({ companies }) => {
               <Table.Column>
                 STATUS
               </Table.Column>
+              <Table.Column>
+                TOTAL JOBS
+              </Table.Column>
 
               <Table.Column>
                 DATE SUBMITTED
@@ -120,6 +150,10 @@ const CompanyRegistrations = ({ companies }) => {
                   </Table.Cell>
 
                   <Table.Cell>
+                    {company.jobCount}
+                  </Table.Cell>
+
+                  <Table.Cell>
                     {format(
                       new Date(company.createdAt),
                       "dd MMMM yyyy"
@@ -128,14 +162,14 @@ const CompanyRegistrations = ({ companies }) => {
 
                   <Table.Cell>
                     <div className="flex gap-2">
-                      <Button
+                      <Button onPress={() => handleStatusUpdate(company._id, "Approved")}
                         variant="ghost"
                         className="bg-[#1c2c23] border border-green-700 text-green-500"
                       >
                         Approve
                       </Button>
 
-                      <Button
+                      <Button onPress={() => handleStatusUpdate(company._id, "Rejected")}
                         className={'border border-red-400'}
                         variant="danger-soft"
                       >
@@ -149,6 +183,7 @@ const CompanyRegistrations = ({ companies }) => {
           </Table.Content>
         </Table.ScrollContainer>
       </Table>
+      <Toaster/>
     </div>
   );
 };
